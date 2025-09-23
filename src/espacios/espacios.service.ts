@@ -4,12 +4,14 @@ import { UpdateEspacioDto } from './dto/update-espacio.dto';
 
 @Injectable()
 export class EspaciosService {
+  private readonly espacios: any = [];
   create(createEspacioDto: CreateEspacioDto) {
+    this.espacios.push(createEspacioDto );
     return 'This action adds a new espacio';
   }
 
   findAll() {
-    return `This action returns all espacios`;
+    return this.espacios;
   }
 
   findOne(id: number) {
