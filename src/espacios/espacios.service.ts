@@ -1,7 +1,5 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-
-import { UpdateEspacioDto } from './dto/update-espacio.dto';
-import { PrismaService } from 'src/prisma.service';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma.service';
 import { Espacio, Prisma } from '../../generated/prisma';
 
 @Injectable()
