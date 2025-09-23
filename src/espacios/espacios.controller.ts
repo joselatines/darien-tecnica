@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { EspaciosService } from './espacios.service';
 import { CreateEspacioDto } from './dto/create-espacio.dto';
@@ -33,27 +34,31 @@ export class EspaciosController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.espaciosService.findOne({ id: id });
+  async findOne(@Param('id') id: string) {
+    const result = await this.espaciosService.findOne({ id: id });
+    if (!result) throw new NotFoundException();
+    return result;
   }
 
   @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateEspacioDto: UpdateEspacioDto,
-  ) {
-  
-    const found = await this.espaciosService.findOne({
-      name: updateEspacioDto.name,
-    });
+   async update(
+     @Param('id') id: string,
+     @Body() updateEspacioDto: UpdateEspacioDto,
+   ) {
 
-    if (found) throw new BadRequestException('Espacio already exists');
+     if (updateEspacioDto.name) {
+       const found = await this.espaciosService.findOne({
+         name: updateEspacioDto.name,
+       });
 
-    return this.espaciosService.update({
-      where: { id: id },
-      data: updateEspacioDto,
-    });
-  }
+       if (found && found.id !== id) throw new BadRequestException('Espacio already exists');
+     }
+
+     return this.espaciosService.update({
+       where: { id: id },
+       data: updateEspacioDto,
+     });
+   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
