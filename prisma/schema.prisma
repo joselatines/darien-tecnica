@@ -22,4 +22,20 @@ model Espacio {
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  reservas Reserva[]
+}
+
+model Reserva {
+  id              String   @id @default(cuid())
+  espacioId       String
+  clientEmail     String
+  reservationDate DateTime
+  startTime       String   // Stores "01:30" format
+  endTime         String   // Stores "01:30" format
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  espacio Espacio @relation(fields: [espacioId], references: [id], onDelete: Cascade)
+
 }
