@@ -14,7 +14,7 @@ async function bootstrap() {
     .setTitle('Dorian Prueba Tecnica')
     .setDescription('Prueba Tecnica Dorian')
     .setVersion('1.0')
-    .addTag('espacios')
+    .addTag('Espacios')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);

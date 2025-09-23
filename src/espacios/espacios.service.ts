@@ -1,28 +1,58 @@
-import { Injectable } from '@nestjs/common';
-import { CreateEspacioDto } from './dto/create-espacio.dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
+
 import { UpdateEspacioDto } from './dto/update-espacio.dto';
+import { PrismaService } from 'src/prisma.service';
+import { Espacio, Prisma } from '../../generated/prisma';
 
 @Injectable()
 export class EspaciosService {
-  private readonly espacios: any = [];
-  create(createEspacioDto: CreateEspacioDto) {
-    this.espacios.push(createEspacioDto );
-    return 'This action adds a new espacio';
+  constructor(private prisma: PrismaService) {}
+
+  async findOne(
+    espacioWhereUniqueInput: Prisma.EspacioWhereUniqueInput,
+  ): Promise<Espacio | null> {
+    return this.prisma.espacio.findUnique({
+      where: espacioWhereUniqueInput,
+    });
   }
 
-  findAll() {
-    return this.espacios;
+  async findAll(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.EspacioWhereUniqueInput;
+    where?: Prisma.EspacioWhereInput;
+    orderBy?: Prisma.EspacioOrderByWithRelationInput;
+  }): Promise<Espacio[]> {
+    const { skip, take, cursor, where, orderBy } = params;
+    return this.prisma.espacio.findMany({
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} espacio`;
+  async create(data: Prisma.EspacioCreateInput): Promise<Espacio> {
+    return this.prisma.espacio.create({
+      data,
+    });
   }
 
-  update(id: number, updateEspacioDto: UpdateEspacioDto) {
-    return `This action updates a #${id} espacio`;
+  async update(params: {
+    where: Prisma.EspacioWhereUniqueInput;
+    data: Prisma.EspacioUpdateInput;
+  }): Promise<Espacio> {
+    const { where, data } = params;
+    return this.prisma.espacio.update({
+      data,
+      where,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} espacio`;
+  async remove(where: Prisma.EspacioWhereUniqueInput): Promise<Espacio> {
+    return this.prisma.espacio.delete({
+      where,
+    });
   }
 }

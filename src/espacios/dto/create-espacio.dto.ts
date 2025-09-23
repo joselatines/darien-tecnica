@@ -28,5 +28,6 @@ export class CreateEspacioDto {
     example: 'This coworking space is made for JS developers',
     description: 'The description of the "espacio"',
   })
+  @IsString()
   description?: string;
 }
