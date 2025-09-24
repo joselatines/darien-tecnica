@@ -7,15 +7,23 @@ import {
   Param,
   Delete,
   NotFoundException,
-  BadRequestException,
+  Query,
 } from '@nestjs/common';
 import { ReservasService } from './reservas.service';
+import { PrismaService } from '../prisma.service';
 import { CreateReservaDto } from './dto/create-reserva.dto';
 import { UpdateReservaDto } from './dto/update-reserva.dto';
+import { ApiPaginatedResponse } from './api-paginated-response/api-paginated-response.decorator';
+import { ReservaDto } from './dto/reserva.dto';
+import { createPaginator } from 'prisma-pagination';
+import { PaginatedOutputDto } from './dto/paginated-output.dto';
 
 @Controller('reservas')
 export class ReservasController {
-  constructor(private readonly reservasService: ReservasService) {}
+  constructor(
+    private readonly reservasService: ReservasService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @Post()
   async create(@Body() createReservaDto: CreateReservaDto) {
@@ -23,8 +31,25 @@ export class ReservasController {
   }
 
   @Get()
-  findAll() {
-    return this.reservasService.findAll({});
+  @ApiPaginatedResponse(ReservaDto)
+  async findAll(
+    @Query('page') page: number = 1,
+    @Query('perPage') perPage: number = 10,
+  ): Promise<PaginatedOutputDto<ReservaDto>> {
+    const paginate = createPaginator({ perPage });
+
+    return paginate(
+      this.prisma.reserva,
+      {
+        where: {},
+        orderBy: {
+          id: 'desc',
+        },
+      },
+      {
+        page,
+      },
+    );
   }
 
   @Get(':id')
