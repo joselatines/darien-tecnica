@@ -145,9 +145,9 @@ describe('Espacios (e2e)', () => {
       });
   });
 
-  it('/espacios/:id (DELETE) - should return 400 for non-existing id', () => {
+  it('/espacios/:id (DELETE) - should return 404 for non-existing id', () => {
     return request(app.getHttpServer())
       .delete('/espacios/non-existing-id')
-      .expect(400);
+      .expect(404);
   });
 });

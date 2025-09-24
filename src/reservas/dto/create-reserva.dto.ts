@@ -15,7 +15,7 @@ export class CreateReservaDto {
     description: 'The id of the client',
   })
   @IsString()
-  clienteId: string;
+  clientId: string;
 
   @ApiProperty({
     example: '2002-11-13',

@@ -64,7 +64,7 @@ export class EspaciosController {
   async remove(@Param('id') id: string) {
     const found = await this.espaciosService.findOne({ id: id });
 
-    if (!found) throw new BadRequestException('Espacio not found');
+    if (!found) throw new NotFoundException('Espacio not found');
 
     return this.espaciosService.remove({ id: id });
   }

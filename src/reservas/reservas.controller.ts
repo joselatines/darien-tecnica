@@ -54,7 +54,7 @@ export class ReservasController {
   async remove(@Param('id') id: string) {
     const found = await this.reservasService.findOne({ id: id });
 
-    if (!found) throw new BadRequestException('Reserva not found');
+    if (!found) throw new NotFoundException('Reserva not found');
 
     return this.reservasService.remove({ id: id });
   }

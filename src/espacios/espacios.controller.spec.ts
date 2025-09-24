@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { EspaciosController } from './espacios.controller';
 import { EspaciosService } from './espacios.service';
 import { PrismaService } from '../prisma.service';
@@ -93,7 +93,7 @@ describe('EspaciosController', () => {
 
   it('should not remove non-existing espacio', async () => {
     await expect(controller.remove('non-existing-id')).rejects.toThrow(
-      BadRequestException,
+      NotFoundException,
     );
   });
 });
