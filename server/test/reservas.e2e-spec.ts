@@ -10,6 +10,7 @@ describe('Reservas (e2e)', () => {
   let testEspacioId: string;
   let testClientId: string;
   const testDate = '2025-01-01';
+  const apiKey = process.env.API_KEY as string;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -22,6 +23,7 @@ describe('Reservas (e2e)', () => {
     // Create test espacio
     const espacioResponse = await request(app.getHttpServer())
       .post('/espacios')
+      .set('x-api-key', apiKey)
       .send({
         name: `Test Espacio ${Date.now()}`,
         location: 'Caracas',
@@ -34,6 +36,7 @@ describe('Reservas (e2e)', () => {
     // Create test client
     const clientResponse = await request(app.getHttpServer())
       .post('/clients')
+      .set('x-api-key', apiKey)
       .send({
         email: `test${Date.now()}@example.com`,
       })
@@ -48,6 +51,7 @@ describe('Reservas (e2e)', () => {
   it('/reservas (GET) - should return reservas array', () => {
     return request(app.getHttpServer())
       .get('/reservas')
+      .set('x-api-key', apiKey)
       .expect(200)
       .then((response) => {
         expect(Array.isArray(response.body.data)).toBe(true);
@@ -66,6 +70,7 @@ describe('Reservas (e2e)', () => {
 
     return request(app.getHttpServer())
       .post('/reservas')
+      .set('x-api-key', apiKey)
       .send(createDto)
       .expect(201)
       .then((response) => {
@@ -89,6 +94,7 @@ describe('Reservas (e2e)', () => {
       };
       await request(app.getHttpServer())
         .post('/reservas')
+        .set('x-api-key', apiKey)
         .send(createDto)
         .expect(201);
     }
@@ -105,6 +111,7 @@ describe('Reservas (e2e)', () => {
 
     return request(app.getHttpServer())
       .post('/reservas')
+      .set('x-api-key', apiKey)
       .send(createDto)
       .expect(400);
   });
@@ -121,6 +128,7 @@ describe('Reservas (e2e)', () => {
     };
     await request(app.getHttpServer())
       .post('/reservas')
+      .set('x-api-key', apiKey)
       .send(createDto1)
       .expect(201);
 
@@ -136,6 +144,7 @@ describe('Reservas (e2e)', () => {
 
     return request(app.getHttpServer())
       .post('/reservas')
+      .set('x-api-key', apiKey)
       .send(createDto2)
       .expect(400);
   });
@@ -143,6 +152,7 @@ describe('Reservas (e2e)', () => {
   it('/reservas/:id (GET) - should return specific reserva', () => {
     return request(app.getHttpServer())
       .get(`/reservas/${createdReservaId}`)
+      .set('x-api-key', apiKey)
       .expect(200)
       .then((response) => {
         expect(response.body.id).toBe(createdReservaId);
@@ -152,6 +162,7 @@ describe('Reservas (e2e)', () => {
   it('/reservas/:id (GET) - should return 404 for non-existing id', () => {
     return request(app.getHttpServer())
       .get('/reservas/non-existing-id')
+      .set('x-api-key', apiKey)
       .expect(404);
   });
 
@@ -162,6 +173,7 @@ describe('Reservas (e2e)', () => {
 
     return request(app.getHttpServer())
       .patch(`/reservas/${createdReservaId}`)
+      .set('x-api-key', apiKey)
       .send(updateDto)
       .expect(200)
       .then((response) => {
@@ -182,6 +194,7 @@ describe('Reservas (e2e)', () => {
     };
     await request(app.getHttpServer())
       .post('/reservas')
+      .set('x-api-key', apiKey)
       .send(createDto)
       .expect(201);
 
@@ -194,6 +207,7 @@ describe('Reservas (e2e)', () => {
 
     return request(app.getHttpServer())
       .patch(`/reservas/${createdReservaId}`)
+      .set('x-api-key', apiKey)
       .send(updateDto)
       .expect(200);
   });
@@ -201,6 +215,7 @@ describe('Reservas (e2e)', () => {
   it('/reservas/:id (DELETE) - should delete reserva', () => {
     return request(app.getHttpServer())
       .delete(`/reservas/${createdReservaId}`)
+      .set('x-api-key', apiKey)
       .expect(200)
       .then((response) => {
         expect(response.body.id).toBe(createdReservaId);
@@ -210,6 +225,7 @@ describe('Reservas (e2e)', () => {
   it('/reservas/:id (DELETE) - should return 404 for non-existing id', () => {
     return request(app.getHttpServer())
       .delete('/reservas/non-existing-id')
+      .set('x-api-key', apiKey)
       .expect(404);
   });
 });

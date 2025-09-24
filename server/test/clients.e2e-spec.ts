@@ -8,6 +8,8 @@ describe('Clients (e2e)', () => {
   let app: INestApplication<App>;
   let createdClientId: string;
   let testEmail = `test${Date.now()}@example.com`;
+  const apiKey = process.env.API_KEY as string;
+
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -25,6 +27,7 @@ describe('Clients (e2e)', () => {
   it('/clients (GET) - should return clients array', () => {
     return request(app.getHttpServer())
       .get('/clients')
+      .set('x-api-key', apiKey)
       .expect(200)
       .then((response) => {
         expect(Array.isArray(response.body)).toBe(true);
@@ -38,6 +41,7 @@ describe('Clients (e2e)', () => {
 
     return request(app.getHttpServer())
       .post('/clients')
+      .set('x-api-key', apiKey)
       .send(createDto)
       .expect(201)
       .then((response) => {
@@ -54,6 +58,7 @@ describe('Clients (e2e)', () => {
 
     return request(app.getHttpServer())
       .post('/clients')
+      .set('x-api-key', apiKey)
       .send(createDto)
       .expect(400);
   });
@@ -61,6 +66,7 @@ describe('Clients (e2e)', () => {
   it('/clients (GET) - should return clients array with created client', () => {
     return request(app.getHttpServer())
       .get('/clients')
+      .set('x-api-key', apiKey)
       .expect(200)
       .then((response) => {
         expect(Array.isArray(response.body)).toBe(true);
@@ -74,6 +80,7 @@ describe('Clients (e2e)', () => {
   it('/clients/:id (GET) - should return specific client', () => {
     return request(app.getHttpServer())
       .get(`/clients/${createdClientId}`)
+      .set('x-api-key', apiKey)
       .expect(200)
       .then((response) => {
         expect(response.body.id).toBe(createdClientId);
@@ -84,6 +91,7 @@ describe('Clients (e2e)', () => {
   it('/clients/:id (GET) - should return 404 for non-existing id', () => {
     return request(app.getHttpServer())
       .get('/clients/non-existing-id')
+      .set('x-api-key', apiKey)
       .expect(404);
   });
 
@@ -95,6 +103,7 @@ describe('Clients (e2e)', () => {
 
     return request(app.getHttpServer())
       .patch(`/clients/${createdClientId}`)
+      .set('x-api-key', apiKey)
       .send(updateDto)
       .expect(200)
       .then((response) => {
@@ -112,6 +121,7 @@ describe('Clients (e2e)', () => {
 
     return request(app.getHttpServer())
       .post('/clients')
+      .set('x-api-key', apiKey)
       .send(anotherDto)
       .expect(201)
       .then(() => {
@@ -122,6 +132,7 @@ describe('Clients (e2e)', () => {
 
         return request(app.getHttpServer())
           .patch(`/clients/${createdClientId}`)
+          .set('x-api-key', apiKey)
           .send(updateDto)
           .expect(400);
       });
@@ -130,6 +141,7 @@ describe('Clients (e2e)', () => {
   it('/clients/:id (DELETE) - should delete client', () => {
     return request(app.getHttpServer())
       .delete(`/clients/${createdClientId}`)
+      .set('x-api-key', apiKey)
       .expect(200)
       .then((response) => {
         expect(response.body.id).toBe(createdClientId);
@@ -139,6 +151,7 @@ describe('Clients (e2e)', () => {
   it('/clients/:id (DELETE) - should return 404 for non-existing id', () => {
     return request(app.getHttpServer())
       .delete('/clients/non-existing-id')
+      .set('x-api-key', apiKey)
       .expect(404);
   });
 });

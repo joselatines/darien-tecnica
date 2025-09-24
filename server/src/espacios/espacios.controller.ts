@@ -12,7 +12,9 @@ import {
 import { EspaciosService } from './espacios.service';
 import { CreateEspacioDto } from './dto/create-espacio.dto';
 import { UpdateEspacioDto } from './dto/update-espacio.dto';
+import { ApiSecurity } from '@nestjs/swagger';
 
+@ApiSecurity('api-key')
 @Controller('espacios')
 export class EspaciosController {
   constructor(private readonly espaciosService: EspaciosService) {}

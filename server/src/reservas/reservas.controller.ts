@@ -17,7 +17,9 @@ import { ApiPaginatedResponse } from './api-paginated-response/api-paginated-res
 import { ReservaDto } from './dto/reserva.dto';
 import { createPaginator } from 'prisma-pagination';
 import { PaginatedOutputDto } from './dto/paginated-output.dto';
+import { ApiSecurity } from '@nestjs/swagger';
 
+@ApiSecurity('api-key')
 @Controller('reservas')
 export class ReservasController {
   constructor(

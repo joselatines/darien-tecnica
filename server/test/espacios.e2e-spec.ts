@@ -8,6 +8,7 @@ describe('Espacios (e2e)', () => {
   let app: INestApplication<App>;
   let createdEspacioId: string;
   let testName = `Test Espacio ${Date.now()}`;
+  const apiKey = process.env.API_KEY as string;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -25,6 +26,7 @@ describe('Espacios (e2e)', () => {
   it('/espacios (GET) - should return espacios array', () => {
     return request(app.getHttpServer())
       .get('/espacios')
+      .set('x-api-key', apiKey)
       .expect(200)
       .then((response) => {
         expect(Array.isArray(response.body)).toBe(true);
@@ -41,6 +43,7 @@ describe('Espacios (e2e)', () => {
 
     return request(app.getHttpServer())
       .post('/espacios')
+      .set('x-api-key', apiKey)
       .send(createDto)
       .expect(201)
       .then((response) => {
@@ -61,6 +64,7 @@ describe('Espacios (e2e)', () => {
 
     return request(app.getHttpServer())
       .post('/espacios')
+      .set('x-api-key', apiKey)
       .send(createDto)
       .expect(400);
   });
@@ -68,6 +72,7 @@ describe('Espacios (e2e)', () => {
   it('/espacios (GET) - should return espacios array', () => {
     return request(app.getHttpServer())
       .get('/espacios')
+      .set('x-api-key', apiKey)
       .expect(200)
       .then((response) => {
         expect(Array.isArray(response.body)).toBe(true);
@@ -81,6 +86,7 @@ describe('Espacios (e2e)', () => {
   it('/espacios/:id (GET) - should return specific espacio', () => {
     return request(app.getHttpServer())
       .get(`/espacios/${createdEspacioId}`)
+      .set('x-api-key', apiKey)
       .expect(200)
       .then((response) => {
         expect(response.body.id).toBe(createdEspacioId);
@@ -91,6 +97,7 @@ describe('Espacios (e2e)', () => {
   it('/espacios/:id (GET) - should return 404 for non-existing id', () => {
     return request(app.getHttpServer())
       .get('/espacios/non-existing-id')
+      .set('x-api-key', apiKey)
       .expect(404);
   });
 
@@ -102,6 +109,7 @@ describe('Espacios (e2e)', () => {
 
     return request(app.getHttpServer())
       .patch(`/espacios/${createdEspacioId}`)
+      .set('x-api-key', apiKey)
       .send(updateDto)
       .expect(200)
       .then((response) => {
@@ -121,6 +129,7 @@ describe('Espacios (e2e)', () => {
 
     return request(app.getHttpServer())
       .post('/espacios')
+      .set('x-api-key', apiKey)
       .send(anotherDto)
       .expect(201)
       .then(() => {
@@ -131,6 +140,7 @@ describe('Espacios (e2e)', () => {
 
         return request(app.getHttpServer())
           .patch(`/espacios/${createdEspacioId}`)
+          .set('x-api-key', apiKey)
           .send(updateDto)
           .expect(400);
       });
@@ -139,6 +149,7 @@ describe('Espacios (e2e)', () => {
   it('/espacios/:id (DELETE) - should delete espacio', () => {
     return request(app.getHttpServer())
       .delete(`/espacios/${createdEspacioId}`)
+      .set('x-api-key', apiKey)
       .expect(200)
       .then((response) => {
         expect(response.body.id).toBe(createdEspacioId);
@@ -148,6 +159,7 @@ describe('Espacios (e2e)', () => {
   it('/espacios/:id (DELETE) - should return 404 for non-existing id', () => {
     return request(app.getHttpServer())
       .delete('/espacios/non-existing-id')
+      .set('x-api-key', apiKey)
       .expect(404);
   });
 });

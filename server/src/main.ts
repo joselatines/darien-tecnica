@@ -15,6 +15,14 @@ async function bootstrap() {
     .setDescription('Prueba Tecnica Dorian')
     .setVersion('1.0')
     .addTag('Espacios')
+    .addApiKey(
+      {
+        type: 'apiKey',
+        name: 'x-api-key',
+        in: 'header',
+      },
+      'api-key', // security name
+    )
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
