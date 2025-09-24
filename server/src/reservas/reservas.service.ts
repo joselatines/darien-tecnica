@@ -18,6 +18,7 @@ interface ReservaUpdateInput extends Prisma.ReservaUpdateInput {
 
 @Injectable()
 export class ReservasService {
+  private MAX_RESERVATIONS = 3;
   constructor(private prisma: PrismaService) {}
 
   async findOne(
@@ -46,11 +47,31 @@ export class ReservasService {
   }
 
   async create(data: ReservaCreateInput): Promise<Reserva> {
+    // check if user has a max of reservations per week
+    const reservationDate = new Date(data.reservationDate);
+    const { startOfWeek, endOfWeek } = this.getWeekRange(reservationDate);
+
+    const userReservationsThisWeek = await this.prisma.reserva.findMany({
+      where: {
+        clientId: data.clientId,
+        reservationDate: {
+          gte: startOfWeek,
+          lte: endOfWeek,
+        },
+      },
+    });
+
+    if (userReservationsThisWeek.length >= this.MAX_RESERVATIONS) {
+      throw new BadRequestException(
+        `User has reached the maximum number of reservations (${this.MAX_RESERVATIONS}) per week`,
+      );
+    }
     // Convert string to date
     data.reservationDate = new Date(data.reservationDate);
 
     // First, check if the time slot is available
     const { isAvailable, message } = await this.canCreateReservation(
+      null,
       data.espacioId,
       data.reservationDate,
       data.startTime,
@@ -98,6 +119,7 @@ export class ReservasService {
 
       // Second, check if the time slot is available (excluding the current reservation)
       const { isAvailable, message } = await this.canCreateReservation(
+        reserva.id,
         espacioId,
         data.reservationDate as Date,
         data.startTime as string,
@@ -119,6 +141,18 @@ export class ReservasService {
     return this.prisma.reserva.delete({
       where,
     });
+  }
+
+  private getWeekRange(date: Date): { startOfWeek: Date; endOfWeek: Date } {
+    const d = new Date(date);
+    const day = d.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Adjust to Monday
+    const startOfWeek = new Date(d.setDate(diff));
+    startOfWeek.setHours(0, 0, 0, 0);
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23, 59, 59, 999);
+    return { startOfWeek, endOfWeek };
   }
 
   private async checkExistingReservation(
@@ -170,6 +204,7 @@ export class ReservasService {
    * Private method to check if a reservation can be created for the given space at the given time slot.
    */
   private async canCreateReservation(
+    reservationId: string | null,
     espacioId: string,
     reservationDate: Date,
     startTime: string,
@@ -185,6 +220,14 @@ export class ReservasService {
     let message = '';
 
     if (existing.length > 0) {
+      const isTheSameReservation = existing.filter(
+        (reservation) => reservation.id === reservationId,
+      )[0];
+
+      if (isTheSameReservation) {
+        return { isAvailable: true, message };
+      }
+
       console.debug('⚠️ Reservation conflict found. Existing reservations:');
 
       message = existing
