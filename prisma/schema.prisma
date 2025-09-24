@@ -26,16 +26,32 @@ model Espacio {
   reservas Reserva[]
 }
 
+/* model Cliente {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String    @db.VarChar(255)
+  reservations  Reserva[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+} */
+
 model Reserva {
   id              String   @id @default(cuid())
   espacioId       String
-  clientEmail     String
-  reservationDate DateTime
-  startTime       String   // Stores "01:30" format
-  endTime         String   // Stores "01:30" format
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  clienteId       String
+  reservationDate DateTime  // ISO format 2024-01-15
+  startTime       String    // Stores "01:30" format
+  endTime         String    // Stores "01:30" format
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  status          String    @default("confirmed") // confirmed, pending, cancelled
 
+  // Relationship
   espacio Espacio @relation(fields: [espacioId], references: [id], onDelete: Cascade)
+  // cliente Cliente @relation(fields: [clienteId], references: [id], onDelete: Cascade)
 
+  // Index for query performance
+  @@index([espacioId, reservationDate])
+  @@index([clienteId, reservationDate])
+  @@unique([espacioId, reservationDate, startTime]) // Prevent hour conflicts
 }

@@ -1,0 +1,2 @@
+- Use ia para mejorar mis mensajes de commits para asegurar que se iban haceindo cambios poco a poco y asi mas facil debuggear en un futuro c=
+- Ayuda para hacer la funcionalidaad de revisar si una reservacion hace conflicto con otra

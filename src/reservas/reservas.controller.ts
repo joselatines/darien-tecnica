@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { ReservasService } from './reservas.service';
 import { CreateReservaDto } from './dto/create-reserva.dto';
 import { UpdateReservaDto } from './dto/update-reserva.dto';
@@ -8,27 +18,44 @@ export class ReservasController {
   constructor(private readonly reservasService: ReservasService) {}
 
   @Post()
-  create(@Body() createReservaDto: CreateReservaDto) {
-    return this.reservasService.create(createReservaDto);
+  async create(@Body() createReservaDto: CreateReservaDto) {
+    return this.reservasService.create(createReservaDto as any);
   }
 
   @Get()
   findAll() {
-    return this.reservasService.findAll();
+    return this.reservasService.findAll({});
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reservasService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const result = await this.reservasService.findOne({ id: id });
+    if (!result) throw new NotFoundException();
+    return result;
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReservaDto: UpdateReservaDto) {
-    return this.reservasService.update(+id, updateReservaDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateReservaDto: UpdateReservaDto,
+  ) {
+    if (updateReservaDto.reservationDate)
+      updateReservaDto.reservationDate = new Date(
+        updateReservaDto.reservationDate,
+      );
+
+    return this.reservasService.update({
+      where: { id: id },
+      data: updateReservaDto,
+    });
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reservasService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const found = await this.reservasService.findOne({ id: id });
+
+    if (!found) throw new BadRequestException('Reserva not found');
+
+    return this.reservasService.remove({ id: id });
   }
 }

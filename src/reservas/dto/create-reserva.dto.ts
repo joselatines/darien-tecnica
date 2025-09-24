@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsISO8601, IsString, Matches } from 'class-validator';
+import { IsISO8601, IsString, Matches } from 'class-validator';
+type Status = 'confirmed' | 'pending' | 'cancelled';
 
 export class CreateReservaDto {
   @ApiProperty({
@@ -10,11 +11,11 @@ export class CreateReservaDto {
   espacioId: string;
 
   @ApiProperty({
-    example: 'jose@test.com',
-    description: 'The email of the client',
+    example: '6165161',
+    description: 'The id of the client',
   })
-  @IsEmail()
-  clientEmail: string;
+  @IsString()
+  clienteId: string;
 
   @ApiProperty({
     example: '2002-11-13',
@@ -31,7 +32,7 @@ export class CreateReservaDto {
   @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/, {
     message: 'The start time must be in HH:mm (24 hours format)',
   })
-  startTime: Date;
+  startTime: string;
 
   @ApiProperty({
     example: '02:30',
@@ -41,5 +42,13 @@ export class CreateReservaDto {
   @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/, {
     message: 'The end time must be in HH:mm (24 hours format)',
   })
-  endTime: Date;
+  endTime: string;
+
+  @ApiProperty({
+    example: 'confirmed',
+    description: 'The status of the reservation',
+    enum: ['confirmed', 'pending', 'cancelled'],
+  })
+  @IsString()
+  status: Status;
 }
