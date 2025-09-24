@@ -95,6 +95,41 @@ describe('ReservasController', () => {
     await expect(controller.create(dto)).rejects.toThrow(BadRequestException);
   });
 
+  it('should not create a reserva exceeding max active reservations per week', async () => {
+    // Create 2 confirmed and 1 pending in the same week (3 active)
+    for (let i = 0; i < 2; i++) {
+      const dto: CreateReservaDto = {
+        espacioId,
+        clientId,
+        reservationDate: new Date(testDate.getTime() + i * 24 * 60 * 60 * 1000),
+        startTime: '10:00',
+        endTime: '11:00',
+        status: 'confirmed',
+      };
+      await controller.create(dto);
+    }
+    // One pending
+    const dtoPending: CreateReservaDto = {
+      espacioId,
+      clientId,
+      reservationDate: new Date(testDate.getTime() + 2 * 24 * 60 * 60 * 1000),
+      startTime: '10:00',
+      endTime: '11:00',
+      status: 'pending',
+    };
+    await controller.create(dtoPending);
+    // Now try to create a 4th
+    const dto4th: CreateReservaDto = {
+      espacioId,
+      clientId,
+      reservationDate: new Date(testDate.getTime() + 3 * 24 * 60 * 60 * 1000),
+      startTime: '10:00',
+      endTime: '11:00',
+      status: 'confirmed',
+    };
+    await expect(controller.create(dto4th)).rejects.toThrow(BadRequestException);
+  });
+
   it('should not create a reserva with time conflict', async () => {
     // Create first reserva
     const dto1: CreateReservaDto = {

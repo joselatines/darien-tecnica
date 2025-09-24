@@ -61,7 +61,8 @@ export class ReservasService {
       },
     });
 
-    if (userReservationsThisWeek.length >= this.MAX_RESERVATIONS) {
+    const activeReservations = userReservationsThisWeek.filter((r) => r.status === 'confirmed' || r.status === 'pending');
+    if (activeReservations.length >= this.MAX_RESERVATIONS) {
       throw new BadRequestException(
         `User has reached the maximum number of reservations (${this.MAX_RESERVATIONS}) per week`,
       );
