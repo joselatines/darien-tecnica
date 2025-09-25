@@ -9,7 +9,7 @@ export default function MainLayout() {
 
   return (
     <div className="d-flex flex-column min-vh-100">
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light sticky-top">
         <div className="container-fluid">
           <span className="navbar-brand">Dashboard</span>
           <div className="navbar-nav">
@@ -25,11 +25,11 @@ export default function MainLayout() {
           </button>
         </div>
       </nav>
-      <main className="flex-grow-1 container-fluid" style={{ backgroundColor: '#dee2e6' }}>
+      <main className="flex-grow-1 container-fluid py-5" style={{ backgroundColor: '#dee2e6' }}>
         <Outlet />
       </main>
-      <footer className="bg-light text-center py-3">
-        Prueba tecnica 24/09/2025 Darienpara el role de React Node Developer
+      <footer className="bg-dark text-white text-center py-3">
+        Prueba técnica 24/09/2025 Darien para el role de React Node Developer
       </footer>
     </div>
   )

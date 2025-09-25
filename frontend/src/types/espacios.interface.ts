@@ -6,6 +6,7 @@ export interface Espacio {
   description?: string | null
   createdAt: Date
   updatedAt: Date
+  imgUrl?: string
 }
 
 export interface CreateEspacioDto {

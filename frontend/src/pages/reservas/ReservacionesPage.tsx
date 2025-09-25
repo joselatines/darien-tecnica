@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import ReservacionCard from '../components/reservaciones/ReservacionCard'
+import ReservacionCard from '../../components/reservaciones/ReservacionCard'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { api } from '../services/api'
-import ErrorHandler from '../components/shared/ErrorHandler'
-import Loader from '../components/shared/Loader'
-import Pagination from '../components/shared/Pagination'
-import CreateReservaModal from '../components/reservaciones/CreateReservaModal'
-import type { CreateReservaDto } from '../types/reservaciones.interface'
-import { CACHE_KEYS } from '../lib/constants'
+import { api } from '../../services/api'
+import ErrorHandler from '../../components/shared/ErrorHandler'
+import Loader from '../../components/shared/Loader'
+import Pagination from '../../components/shared/Pagination'
+import CreateReservaModal from '../../components/reservaciones/CreateReservaModal'
+import type { CreateReservaDto } from '../../types/reservaciones.interface'
+import { CACHE_KEYS } from '../../lib/constants'
 
 export default function ReservacionesPage() {
   const [currentPage, setCurrentPage] = useState(1)
