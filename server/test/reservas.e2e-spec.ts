@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from '../src/app.module';
+import { PrismaService } from '../src/prisma.service';
 
 describe('Reservas (e2e)', () => {
   let app: INestApplication<App>;
@@ -45,6 +46,10 @@ describe('Reservas (e2e)', () => {
   });
 
   afterEach(async () => {
+    // Disconnect Prisma to prevent connection leaks
+    const prismaService = app.get(PrismaService);
+    await prismaService.$disconnect();
+
     await app.close();
   });
 
