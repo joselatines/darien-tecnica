@@ -22,7 +22,8 @@ axios.interceptors.response.use(
 
 class ApiService {
   protected readonly API_URL = import.meta.env.VITE_API_URL
-  getAll() {}
+  async getAll(): Promise<any> {}
+  async create(data: any): Promise<any> {}
 }
 
 export default ApiService

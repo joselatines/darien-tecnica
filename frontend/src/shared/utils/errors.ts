@@ -1,40 +1,48 @@
 import type { AxiosError } from 'axios'
 
-export const handleApiError = (error: AxiosError, context: string = 'la operación') => {
-  // Extract status code from error response
-  const statusCode = error.response?.status || 500
-  const errorMessage = error.message || 'Algo inesperado ha ocurrido'
+// Map HTTP status codes to user-friendly messages
+const statusMessages: Record<number, string> = {
+  400: 'Solicitud incorrecta. Verifica los datos.',
+  401: 'No autorizado. Inicia sesión nuevamente.',
+  403: 'Sin permisos para esta acción.',
+  404: 'Recurso no encontrado.',
+  409: 'Conflicto en la solicitud.',
+  422: 'Datos inválidos.',
+  429: 'Demasiadas solicitudes. Intenta de nuevo.',
+  500: 'Error del servidor. Contacta al soporte.',
+  502: 'Error de conexión. Intenta de nuevo.',
+  503: 'Servicio no disponible. Intenta más tarde.',
+  504: 'Tiempo de espera agotado.'
+}
 
-  // Default messages based on status codes
-  const statusMessages: { [key: number]: string } = {
-    400: `Solicitud incorrecta. Por favor, verifica los datos ingresados.`,
-    401: `No autorizado. Por favor, inicia sesión nuevamente.`,
-    403: `No tienes permisos para realizar esta acción.`,
-    404: `Recurso no encontrado. La reservación solicitada no existe.`,
-    409: `Conflicto: ${errorMessage.toLowerCase()}`,
-    422: `Datos de entrada inválidos. ${errorMessage}`,
-    429: `Demasiadas solicitudes. Por favor, intenta nuevamente en unos minutos.`,
-    500: `Error interno del servidor. Por favor, contacta al soporte técnico.`,
-    502: `Error de conexión con el servidor. Intenta nuevamente.`,
-    503: `Servicio no disponible temporalmente. Por favor, intenta más tarde.`,
-    504: `Tiempo de espera agotado. Verifica tu conexión a internet.`
+const getKnownErrors = (message: string): string | null => {
+  if (message.includes('User has reached the maximum')) {
+    return 'Haz superado el límite de reservaciones por semana.'
+  }
+  return null
+}
+
+/**
+ * Handles API errors and returns a user-friendly message.
+ * @param error - The Axios error.
+ * @param context - The operation context (optional).
+ * @returns A user-friendly error message in Spanish.
+ */
+export const handleApiError = (error: AxiosError, context: string = 'operación'): string => {
+  const status = error.response?.status || 500
+  const message =
+    (error.response?.data as { message?: string })?.message || error.message || 'Error inesperado'
+
+  // Check for known error
+  const knownError = getKnownErrors(message)
+  if (knownError) {
+    console.error(`Error [${status}]: ${context}`, { message, url: error.config?.url })
+    return knownError
   }
 
-  // Get the specific message for the status code or use a generic one
-  let userMessage = statusMessages[statusCode] || `Error ${statusCode}: ${errorMessage}`
-
-  // Add context to the message
-  if (!userMessage.includes(context)) {
-    userMessage = `Error al ${context}. ${userMessage}`
-  }
-
-  // Log detailed error for debugging
-  console.error(`API Error [${statusCode}]:`, {
-    context,
-    originalError: errorMessage,
-    url: error.config?.url,
-    method: error.config?.method
-  })
+  // Get status-based message or fallback
+  const userMessage = statusMessages[status] || `Error ${status}: ${message}`
+  console.error(`Error [${status}]: ${context}`, { message, url: error.config?.url })
 
   return userMessage
 }
