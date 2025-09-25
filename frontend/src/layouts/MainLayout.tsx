@@ -25,7 +25,7 @@ export default function MainLayout() {
           </button>
         </div>
       </nav>
-      <main className="flex-grow-1">
+      <main className="flex-grow-1 container-fluid" style={{ backgroundColor: '#dee2e6' }}>
         <Outlet />
       </main>
       <footer className="bg-light text-center py-3">

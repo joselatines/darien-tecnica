@@ -7,7 +7,7 @@ import { BrowserRouter, Route, Routes } from 'react-router'
 import EspaciosPage from './pages/EspaciosPage.tsx'
 import MainLayout from './layouts/MainLayout.tsx'
 import LoginPage from './pages/LoginPage.tsx'
-import ReservasPage from './pages/ReservasPage.tsx'
+import ReservacionesPage from './pages/ReservacionesPage.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -16,7 +16,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<LoginPage />} />
         <Route path="dashboard" element={<MainLayout />}>
           <Route path="espacios" element={<EspaciosPage />} />
-          <Route path="reservas" element={<ReservasPage />} />
+          <Route path="reservas" element={<ReservacionesPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
