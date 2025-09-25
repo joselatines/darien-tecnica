@@ -1,9 +1,10 @@
 import axios from 'axios'
+import { localStorageKeys } from '../../lib/constants'
 
 // Configure Axios interceptors
 axios.interceptors.request.use(
   (config) => {
-    const apiKey = import.meta.env.VITE_API_KEY
+    const apiKey = localStorage.getItem(localStorageKeys.apiKey)
     if (apiKey) {
       config.headers['x-api-key'] = apiKey
     }

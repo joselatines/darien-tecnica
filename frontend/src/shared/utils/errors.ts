@@ -5,7 +5,7 @@ const statusMessages: Record<number, string> = {
   400: 'Solicitud incorrecta. Verifica los datos.',
   401: 'No autorizado. Inicia sesión nuevamente.',
   403: 'Sin permisos para esta acción.',
-  404: 'Recurso no encontrado.',
+  404: 'No encontrado',
   409: 'Conflicto en la solicitud.',
   422: 'Datos inválidos.',
   429: 'Demasiadas solicitudes. Intenta de nuevo.',
@@ -18,6 +18,8 @@ const statusMessages: Record<number, string> = {
 const getKnownErrors = (message: string): string | null => {
   if (message.includes('User has reached the maximum')) {
     return 'Haz superado el límite de reservaciones por semana.'
+  } else if (message.includes('email must be an email')) {
+    return 'El correo electrónica no es válido.'
   }
   return null
 }

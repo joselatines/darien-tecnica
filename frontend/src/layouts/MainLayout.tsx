@@ -1,9 +1,11 @@
 import { Outlet, NavLink, useNavigate } from 'react-router'
+import { api } from '../services/api'
 
 export default function MainLayout() {
   const navigate = useNavigate()
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await api.auth.logout()
     navigate('/')
   }
 

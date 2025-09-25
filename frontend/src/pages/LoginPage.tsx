@@ -1,21 +1,45 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useMutation } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { api } from '../services/api';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    const exists = email === 'test@example.com'; // static check
-    if (exists) {
+  const loginMutation = useMutation({
+    mutationFn: (email: string) => api.auth.login(email),
+    onSuccess: () => {
+      toast.success('Inicio de sesión exitoso');
       navigate('/dashboard/reservas');
-    } else {
-      const create = window.confirm('¿Crear usuario?');
-      if (create) {
-        alert('Usuario creado'); // static create
-        navigate('/dashboard/reservas');
+    },
+    onError: (error) => {
+      // If login fails, offer to register
+      const register = window.confirm(`${error.message}. ¿Deseas registrarte?`);
+      if (register) {
+        registerMutation.mutate(email);
       }
     }
+  });
+
+  const registerMutation = useMutation({
+    mutationFn: (email: string) => api.auth.register(email),
+    onSuccess: () => {
+      toast.success('Usuario registrado exitosamente');
+      navigate('/dashboard/reservas');
+    },
+    onError: (error) => {
+      toast.error(`Error al registrar: ${error.message}`);
+    }
+  });
+
+  const handleLogin = () => {
+    if (!email.trim()) {
+      toast.error('Por favor ingresa un correo electrónico');
+      return;
+    }
+    loginMutation.mutate(email);
   };
 
   return (
@@ -28,7 +52,13 @@ export default function LoginPage() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Ingresa tu correo"
         />
-        <button className="btn btn-primary" onClick={handleLogin}>Entrar</button>
+        <button
+          className="btn btn-primary"
+          onClick={handleLogin}
+          disabled={loginMutation.isPending || registerMutation.isPending}
+        >
+          {loginMutation.isPending || registerMutation.isPending ? 'Cargando...' : 'Entrar'}
+        </button>
       </div>
     </div>
   )
