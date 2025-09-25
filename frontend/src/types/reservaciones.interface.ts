@@ -10,6 +10,7 @@ export interface Reserva {
   createdAt: Date
   updatedAt: Date
   status: ReservacionStatus
+  clientEmail: string
 }
 
 export interface GetReservasApiResponse {

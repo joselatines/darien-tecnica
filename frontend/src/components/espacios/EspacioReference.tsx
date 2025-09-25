@@ -27,8 +27,9 @@ export default function EspacioReference({ id }: { id: string }) {
 
   return (
     <span
-      className="btn btn-link p-0 text-decoration-none"
+      className="btn-link p-0 text-decoration-none"
       onClick={handleClick}
+      style={{ cursor: 'pointer' }}
       title={`Ver detalles de ${espacio.name}`}
     >
       {espacio.name}

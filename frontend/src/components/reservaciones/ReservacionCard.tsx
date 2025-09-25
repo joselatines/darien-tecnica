@@ -72,8 +72,8 @@ export default function ReservacionCard({ data }: { data: Reserva }) {
             </div>
             {isAdmin && (
               <div className="mb-2">
-                <small className="text-muted">Cliente ID:</small>
-                <p className="mb-0 text-truncate">{data.clientId}</p>
+                <small className="text-muted">Cliente</small>
+                <p className="mb-0 text-truncate">{data.clientEmail}</p>
               </div>
             )}
           </div>

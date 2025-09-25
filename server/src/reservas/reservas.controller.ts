@@ -18,6 +18,7 @@ import { ReservaDto } from './dto/reserva.dto';
 import { createPaginator } from 'prisma-pagination';
 import { PaginatedOutputDto } from './dto/paginated-output.dto';
 import { ApiQuery, ApiSecurity } from '@nestjs/swagger';
+import { Reserva as ReservaEntity } from './entities/reserva.entity';
 
 @ApiSecurity('api-key')
 @Controller('reservas')
@@ -44,14 +45,14 @@ export class ReservasController {
     @Query('page') page: number = 1,
     @Query('perPage') perPage: number = 10,
     @Query('clientId') clientId?: string,
-  ): Promise<PaginatedOutputDto<ReservaDto>> {
+  ): Promise<PaginatedOutputDto<ReservaEntity>> {
     const paginate = createPaginator({ perPage });
 
     let where = {};
     if (clientId) {
       where = { clientId: clientId };
     }
-    return paginate(
+    const result: PaginatedOutputDto<ReservaEntity> = await paginate(
       this.prisma.reserva,
       {
         where: where,
@@ -63,6 +64,23 @@ export class ReservasController {
         page,
       },
     );
+
+    // add emails for ui
+    const reservasWithEmails = await Promise.all(
+      result.data.map(async (reserva) => {
+        const client = await this.prisma.client.findUnique({
+          where: { id: reserva.clientId },
+        });
+
+        if (!client) {
+          throw new Error('Client not found');
+        }
+
+        return { ...reserva, clientEmail: client.email };
+      }),
+    );
+
+    return { ...result, data: reservasWithEmails };
   }
 
   @Get(':id')
