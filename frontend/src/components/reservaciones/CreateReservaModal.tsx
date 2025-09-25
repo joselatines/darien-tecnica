@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { CreateReservaDto } from '../../types/reservaciones.interface'
 import toast from 'react-hot-toast'
+import SelectEspacio from '../espacios/SelectEspacio'
 
 interface CreateReservaModalProps {
   isOpen: boolean
@@ -112,15 +113,12 @@ export default function CreateReservaModal({
             <div className="modal-body">
               <div className="mb-3">
                 <label htmlFor="espacioId" className="form-label">
-                  ID del Espacio
+                  Espacio
                 </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="espacioId"
-                  name="espacioId"
+                <SelectEspacio
                   value={formData.espacioId}
                   onChange={handleChange}
+                  name="espacioId"
                   required
                 />
                 {errors.espacioId && <div className="text-danger">{errors.espacioId}</div>}
