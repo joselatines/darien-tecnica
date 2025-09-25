@@ -34,6 +34,7 @@ export default function SingleEspacio() {
               style={{ objectFit: 'cover' }}
               height={500}
               alt={espacio.name}
+              loading='lazy'
             />
             <div className="card-body">
               <h1 className="card-title">{espacio.name}</h1>

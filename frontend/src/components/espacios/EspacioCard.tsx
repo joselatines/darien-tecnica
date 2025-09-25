@@ -5,12 +5,13 @@ export default function EspacioCard({ data }: { data: Espacio }) {
   const navigate = useNavigate()
 
   return (
-    <div className="card h-100 shadow-sm" style={{ width: '24rem' }}>
+    <div className="card shadow-sm" style={{ width: '24rem' }}>
       <img
         src={data.imgUrl}
         className="card-img-top"
         alt={data.name}
         style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+        loading="lazy"
       />
       <div className="card-body d-flex flex-column">
         <h5
