@@ -23,4 +23,15 @@ export class ReservacionesService extends ApiService {
       throw new Error(userMessage)
     }
   }
+
+  async delete(id: string): Promise<any> {
+    try {
+      // update status to cancelled instead of deleting to preserve history
+      const response = await axios.patch(`${this.API_URL}/reservas/${id}`, { status: 'cancelled' })
+      return response
+    } catch (error) {
+      const userMessage = handleApiError(error as AxiosError, 'eliminar una reserva')
+      throw new Error(userMessage)
+    }
+  }
 }

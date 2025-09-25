@@ -7,6 +7,7 @@ import Loader from '../components/shared/Loader'
 import Pagination from '../components/shared/Pagination'
 import CreateReservaModal from '../components/reservaciones/CreateReservaModal'
 import type { CreateReservaDto } from '../types/reservaciones.interface'
+import { CACHE_KEYS } from '../lib/constants'
 
 export default function ReservacionesPage() {
   const [currentPage, setCurrentPage] = useState(1)
@@ -20,14 +21,14 @@ export default function ReservacionesPage() {
     isLoading,
     error
   } = useQuery({
-    queryKey: ['reservaciones', currentPage, itemsPerPage],
+    queryKey: [CACHE_KEYS.RESERVATIONS, currentPage, itemsPerPage],
     queryFn: () => api.reservaciones.getAll(currentPage, itemsPerPage)
   })
 
   const createMutation = useMutation({
     mutationFn: (data: CreateReservaDto) => api.reservaciones.create(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['reservaciones'] }) // Invalidate cache after successful creation
+      queryClient.invalidateQueries({ queryKey: [CACHE_KEYS.RESERVATIONS] }) // Invalidate cache after successful creation
     }
   })
 
