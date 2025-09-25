@@ -16,7 +16,7 @@ async function bootstrap() {
 
   // swagger
   const config = new DocumentBuilder()
-    .setTitle('Dorian Prueba Tecnica')
+    .setTitle('Darien Prueba Tecnica')
     .setDescription('Prueba Tecnica Dorian')
     .setVersion('1.0')
     .addTag('Espacios')

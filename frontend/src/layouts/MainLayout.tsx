@@ -29,7 +29,7 @@ export default function MainLayout() {
         <Outlet />
       </main>
       <footer className="bg-light text-center py-3">
-        Prueba tecnica 24/09/2025 Dorian para el role de React Node Developer
+        Prueba tecnica 24/09/2025 Darienpara el role de React Node Developer
       </footer>
     </div>
   )

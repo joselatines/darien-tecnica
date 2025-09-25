@@ -5,12 +5,15 @@ import type { Reserva } from '../../types/reservaciones.interface'
 
 export default function ReservacionCard({ data }: { data: Reserva }) {
   return (
-    <div className="card shadow-sm border-0 mb-3">
+    <div className="card shadow-sm border-0 mb-3" 
+    style={{ width: '24rem' }}>
       <div
         className="card-header bg-primary border-0 d-flex justify-content-between align-items-center"
-      /*   style={{ backgroundColor: '#adb5bd' }} */
+        /*   style={{ backgroundColor: '#adb5bd' }} */
       >
-        <h6 className="card-title mb-0 fw-bold text-white">Reservación #{data.id.slice(-6).toUpperCase()}</h6>
+        <h6 className="card-title mb-0 fw-bold text-white">
+          Reservación #{data.id.slice(-6).toUpperCase()}
+        </h6>
         <span className={`badge ${getReservacionStatusColor(data.status)} text-white`}>
           {capitalize(data.status)}
         </span>

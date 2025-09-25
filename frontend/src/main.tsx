@@ -8,17 +8,20 @@ import EspaciosPage from './pages/EspaciosPage.tsx'
 import MainLayout from './layouts/MainLayout.tsx'
 import LoginPage from './pages/LoginPage.tsx'
 import ReservacionesPage from './pages/ReservacionesPage.tsx'
+import Providers from './Providers.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="dashboard" element={<MainLayout />}>
-          <Route path="espacios" element={<EspaciosPage />} />
-          <Route path="reservas" element={<ReservacionesPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <Providers>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="dashboard" element={<MainLayout />}>
+            <Route path="espacios" element={<EspaciosPage />} />
+            <Route path="reservas" element={<ReservacionesPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </Providers>
   </StrictMode>
 )
