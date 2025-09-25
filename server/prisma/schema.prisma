@@ -23,6 +23,7 @@ model Espacio {
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  imgUrl      String   @default("https://cataas.com/cat")
 
   reservas Reserva[]
 }

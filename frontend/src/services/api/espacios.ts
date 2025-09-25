@@ -11,7 +11,18 @@ export class EspaciosService extends ApiService {
       const response = await axios.get(url)
       return response.data
     } catch (error) {
-      const userMessage = handleApiError(error as AxiosError, 'obtener la espaciociones')
+      const userMessage = handleApiError(error as AxiosError, 'obtener los espacios')
+      throw new Error(userMessage)
+    }
+  }
+
+  async getById(id: string): Promise<Espacio> {
+    try {
+      const url = `${this.API_URL}/espacios/${id}`
+      const response = await axios.get(url)
+      return response.data
+    } catch (error) {
+      const userMessage = handleApiError(error as AxiosError, 'obtener el espacio')
       throw new Error(userMessage)
     }
   }

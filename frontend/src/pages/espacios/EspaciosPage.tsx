@@ -1,50 +1,21 @@
+import { useQuery } from '@tanstack/react-query'
 import EspacioCard from '../../components/espacios/EspacioCard'
-import type { Espacio } from '../../types/espacios.interface'
+import { CACHE_KEYS } from '../../lib/constants'
+import { api } from '../../services/api'
 
-const espacios: Espacio[] = [
-  {
-    id: '1',
-    name: 'Coworking plaza 1',
-    location: 'Caracas',
-    capacity: 5,
-    description: 'This coworking space is made for JS developers',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    imgUrl: 'https://cataas.com/cat'
-  },
-  {
-    id: '1',
-    name: 'Coworking plaza 1',
-    location: 'Caracas',
-    capacity: 5,
-    description: 'This coworking space is made for JS developers',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    imgUrl: 'https://cataas.com/cat'
-  },
-  {
-    id: '1',
-    name: 'Coworking plaza 1',
-    location: 'Caracas',
-    capacity: 5,
-    description: 'This coworking space is made for JS developers',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    imgUrl: 'https://cataas.com/cat'
-  },
-  {
-    id: '1',
-    name: 'Coworking plaza 1',
-    location: 'Caracas',
-    capacity: 5,
-    description: 'This coworking space is made for JS developers',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    imgUrl: 'https://cataas.com/cat'
-  }
-]
+import Loader from '../../components/shared/Loader'
+import ErrorHandler from '../../components/shared/ErrorHandler'
 
 export default function EspaciosPage() {
+  const { data, isLoading, error } = useQuery({
+    queryKey: [CACHE_KEYS.ESPACIOS],
+    queryFn: () => api.espacios.getAll()
+  })
+
+  if (isLoading) return <Loader />
+  if (error) return <ErrorHandler errMsg={error.message} />
+  if (!data) return <div>Espacio no encontrado</div>
+
   return (
     <div className="container">
       <div className="my-4 d-flex justify-content-between">
@@ -52,7 +23,7 @@ export default function EspaciosPage() {
         <button className="btn btn-primary">Crear espacio</button>
       </div>
       <section className="d-flex flex-wrap gap-3">
-        {espacios.map((espacio) => (
+        {data.map((espacio) => (
           <EspacioCard key={espacio.id} data={espacio} />
         ))}
       </section>
