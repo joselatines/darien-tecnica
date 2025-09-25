@@ -1,3 +1,4 @@
+import { localStorageKeys } from '../../lib/constants'
 import { handleApiError } from '../../shared/utils/errors'
 import type { CreateReservaDto, GetReservasApiResponse } from '../../types/reservaciones.interface'
 import ApiService from './base'
@@ -6,7 +7,15 @@ import axios, { AxiosError } from 'axios'
 export class ReservacionesService extends ApiService {
   async getAll(page = 1, perPage = 10): Promise<GetReservasApiResponse> {
     try {
-      const url = `${this.API_URL}/reservas?page=${page}&perPage=${perPage}`
+      let url = ''
+      const isAdmin = localStorage.getItem(localStorageKeys.role) === 'admin'
+      if (isAdmin) {
+        url = `${this.API_URL}/reservas?page=${page}&perPage=${perPage}`
+      } else {
+        const clientId = localStorage.getItem(localStorageKeys.clientId)
+        url = `${this.API_URL}/reservas?page=${page}&perPage=${perPage}&clientId=${clientId}`
+      }
+
       const response = await axios.get(url)
       return response.data
     } catch (error) {

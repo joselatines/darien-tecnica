@@ -5,9 +5,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../../services/api'
 import type { Reserva } from '../../types/reservaciones.interface'
 import { CACHE_KEYS } from '../../lib/constants'
+import EspacioReference from '../espacios/EspacioReference'
+import { useRole } from '../../hooks/useRole'
 
 export default function ReservacionCard({ data }: { data: Reserva }) {
   const queryClient = useQueryClient()
+
+  const { isAdmin } = useRole()
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => api.reservaciones.delete(id),
@@ -61,14 +65,17 @@ export default function ReservacionCard({ data }: { data: Reserva }) {
 
           <div className="col-md-6">
             <div className="mb-2">
-              <small className="text-muted">Espacio ID:</small>
-              <p className="mb-0 text-truncate">{data.espacioId}</p>
+              <small className="text-muted">Espacio:</small>
+              <p className="mb-0">
+                <EspacioReference id={data.espacioId} />
+              </p>
             </div>
-
-            <div className="mb-2">
-              <small className="text-muted">Cliente ID:</small>
-              <p className="mb-0 text-truncate">{data.clientId}</p>
-            </div>
+            {isAdmin && (
+              <div className="mb-2">
+                <small className="text-muted">Cliente ID:</small>
+                <p className="mb-0 text-truncate">{data.clientId}</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

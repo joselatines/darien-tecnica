@@ -23,7 +23,7 @@ export class AuthService extends ApiService {
 
       localStorage.setItem(localStorageKeys.apiKey, response.data.apiKey)
       localStorage.setItem(localStorageKeys.clientId, response.data.id)
-      return response
+      return response.data
     } catch (error) {
       const userMessage = handleApiError(error as AxiosError, 'registrar un usuario')
       throw new Error(userMessage)
@@ -43,11 +43,11 @@ export class AuthService extends ApiService {
   }
 
   async loginAsAdmin() {
-    try {
-      const data = await this.login('admin@gmail.com')
-
+    try {      
+      const data = await this.register('admin@gmail.com')
+      
       localStorage.setItem(localStorageKeys.apiKey, data.apiKey)
-      localStorage.setItem(localStorageKeys.role, 'true')
+      localStorage.setItem(localStorageKeys.role, 'admin')
     } catch (error) {
       const userMessage = handleApiError(error as AxiosError, 'cerrar sesión')
       throw new Error(userMessage)

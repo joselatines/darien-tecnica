@@ -17,7 +17,7 @@ import { ApiPaginatedResponse } from './api-paginated-response/api-paginated-res
 import { ReservaDto } from './dto/reserva.dto';
 import { createPaginator } from 'prisma-pagination';
 import { PaginatedOutputDto } from './dto/paginated-output.dto';
-import { ApiSecurity } from '@nestjs/swagger';
+import { ApiQuery, ApiSecurity } from '@nestjs/swagger';
 
 @ApiSecurity('api-key')
 @Controller('reservas')
@@ -33,17 +33,28 @@ export class ReservasController {
   }
 
   @Get()
+  @ApiQuery({
+    name: 'clientId',
+    required: false,
+    type: String,
+    description: 'Client id',
+  })
   @ApiPaginatedResponse(ReservaDto)
   async findAll(
     @Query('page') page: number = 1,
     @Query('perPage') perPage: number = 10,
+    @Query('clientId') clientId?: string,
   ): Promise<PaginatedOutputDto<ReservaDto>> {
     const paginate = createPaginator({ perPage });
 
+    let where = {};
+    if (clientId) {
+      where = { clientId: clientId };
+    }
     return paginate(
       this.prisma.reserva,
       {
-        where: {},
+        where: where,
         orderBy: {
           id: 'desc',
         },

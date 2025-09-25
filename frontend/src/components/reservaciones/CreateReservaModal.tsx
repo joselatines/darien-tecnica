@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { CreateReservaDto } from '../../types/reservaciones.interface'
 import toast from 'react-hot-toast'
 import SelectEspacio from '../espacios/SelectEspacio'
+import { localStorageKeys } from '../../lib/constants'
 
 interface CreateReservaModalProps {
   isOpen: boolean
@@ -18,7 +19,7 @@ export default function CreateReservaModal({
 }: CreateReservaModalProps) {
   const [formData, setFormData] = useState<CreateReservaDto>({
     espacioId: '',
-    clientId: '',
+    clientId: localStorage.getItem(localStorageKeys.clientId) || '',
     reservationDate: new Date(),
     startTime: '',
     endTime: '',
@@ -124,21 +125,6 @@ export default function CreateReservaModal({
                 {errors.espacioId && <div className="text-danger">{errors.espacioId}</div>}
               </div>
               <div className="mb-3">
-                <label htmlFor="clientId" className="form-label">
-                  ID del Cliente
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="clientId"
-                  name="clientId"
-                  value={formData.clientId}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.clientId && <div className="text-danger">{errors.clientId}</div>}
-              </div>
-              <div className="mb-3">
                 <label htmlFor="reservationDate" className="form-label">
                   Fecha de Reserva
                 </label>
@@ -151,7 +137,9 @@ export default function CreateReservaModal({
                   onChange={handleChange}
                   required
                 />
-                {errors.reservationDate && <div className="text-danger">{errors.reservationDate}</div>}
+                {errors.reservationDate && (
+                  <div className="text-danger">{errors.reservationDate}</div>
+                )}
               </div>
               <div className="mb-3">
                 <label htmlFor="startTime" className="form-label">

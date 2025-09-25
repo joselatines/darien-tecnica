@@ -1,8 +1,10 @@
 import { Outlet, NavLink, useNavigate } from 'react-router'
 import { api } from '../services/api'
+import { useRole } from '../hooks/useRole'
 
 export default function MainLayout() {
   const navigate = useNavigate()
+  const { isAdmin } = useRole()
 
   const handleLogout = async () => {
     await api.auth.logout()
@@ -11,7 +13,11 @@ export default function MainLayout() {
 
   return (
     <div className="d-flex flex-column min-vh-100">
-      <nav className="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+      <nav
+        className={`navbar navbar-expand-lg sticky-top ${
+          isAdmin ? 'navbar-dark bg-dark' : 'navbar-light'
+        }`}
+      >
         <div className="container-fluid">
           <span className="navbar-brand">Dashboard</span>
           <div className="navbar-nav">

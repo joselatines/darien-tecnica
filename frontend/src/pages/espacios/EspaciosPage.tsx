@@ -8,10 +8,12 @@ import CreateEspacioModal from '../../components/espacios/CreateEspacioModal'
 import Loader from '../../components/shared/Loader'
 import ErrorHandler from '../../components/shared/ErrorHandler'
 import type { CreateEspacioDto } from '../../types/espacios.interface'
+import { useRole } from '../../hooks/useRole'
 
 export default function EspaciosPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const queryClient = useQueryClient()
+  const { isAdmin } = useRole()
 
   const { data, isLoading, error } = useQuery({
     queryKey: [CACHE_KEYS.ESPACIOS],
@@ -37,7 +39,11 @@ export default function EspaciosPage() {
     <div className="container">
       <div className="my-4 d-flex justify-content-between">
         <h2>Espacios</h2>
-        <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>Crear espacio</button>
+        {isAdmin && (
+          <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
+            Crear espacio
+          </button>
+        )}
       </div>
       <section className="d-flex flex-wrap gap-3">
         {data.map((espacio) => (
