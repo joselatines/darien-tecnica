@@ -1,73 +1,71 @@
-# React + TypeScript + Vite
+# Frontend - Gestión de Reservas
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interfaz de usuario moderna para el sistema de gestión de reservas de espacios, construida con React 19, TypeScript y Bootstrap 5.
 
-Currently, two official plugins are available:
+## 🚀 Tecnologías Utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19**: La versión más reciente con las últimas características
+- **TypeScript**: Tipado estático para mayor robustez
+- **Vite**: Build tool ultrarrápido para desarrollo moderno
+- **React Query**: Gestión eficiente del estado del servidor
+- **Bootstrap 5**: Framework CSS responsivo y moderno
+- **React Router**: Navegación declarativa del lado cliente
+- **React Hot Toast**: Notificaciones elegantes
+- **Axios**: Cliente HTTP para comunicación con la API
 
-## React Compiler
+## 📋 Requisitos Previos
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js 18+ y npm
+- Backend corriendo en http://localhost:3000 (ver README del servidor)
 
-## Expanding the ESLint configuration
+## 🛠️ Instalación y Configuración
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 1. Instalar dependencias
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Configurar variables de entorno
+```bash
+cp .env.example .env
+```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+El archivo `.env` debe contener:
+```env
+VITE_API_URL=http://localhost:3000
+VITE_API_KEY=your-api-key-here
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 3. Ejecutar en modo desarrollo
+```bash
+npm run dev
+```
+
+La aplicación estará disponible en `http://localhost:5173`
+
+## 📜 Scripts Disponibles
+
+```bash
+# Desarrollo con hot reload
+npm run dev
+
+# Construir para producción
+npm run build
+
+# Vista previa de la build de producción
+npm run preview
+
+# Ejecutar linter
+npm run lint
+```
+
+## 🔧 Configuración 
+
+### Variables de Entorno
+- `VITE_API_URL`: URL base de la API del backend
+- `VITE_API_KEY`: Clave de API para autenticación (desarrollo)
+
+### Build de Producción
+```bash
+npm run build
 ```

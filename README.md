@@ -122,15 +122,6 @@ npx prisma migrate dev
 npx prisma generate
 ```
 
-## 🔐 Autenticación
-
-El sistema utiliza un sistema de autenticación basado en API keys:
-
-1. **Registro/Login**: Los usuarios se autentican con email
-2. **API Key**: Se genera una clave única por usuario
-3. **Roles**: Sistema básico de roles (admin/user)
-4. **Middleware**: Validación de API key en cada request
-
 ### Desafíos Técnicos Encontrados
 
 **1. Gestión de Conexiones de Base de Datos en Tests**
