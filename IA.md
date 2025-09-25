@@ -9,3 +9,7 @@ Utilice la ia para:
 * Para la lógica de reservas: La IA me ayudó a pensar cómo comparar rangos de tiempo. Me dio ideas y me guio, pero fui yo quien tomó las decisiones finales para construir la funcionalidad de detección de conflictos.
 
 * Para los `tests`: La usé para estructurar mis casos de prueba y generar datos de ejemplo. Esto me permitió escribir los tests más rápido y asegurar que el código funciona como debe.
+
+* Para crear y mejorar los componentes del frontend
+
+* Para la mejora de los README.md y creación de Dockerfiles
