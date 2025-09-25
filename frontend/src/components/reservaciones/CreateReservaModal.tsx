@@ -24,16 +24,55 @@ export default function CreateReservaModal({
     status: 'pending'
   })
 
+  const [errors, setErrors] = useState<Record<string, string>>({})
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: name === 'reservationDate' ? new Date(value) : value
     }))
+    // Clear error for this field
+    setErrors((prev) => ({ ...prev, [name]: '' }))
+  }
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {}
+
+    if (!formData.espacioId.trim()) {
+      newErrors.espacioId = 'ID del espacio es requerido'
+    }
+
+    if (!formData.clientId.trim()) {
+      newErrors.clientId = 'ID del cliente es requerido'
+    }
+
+    const today = new Date()
+    const todayStr = today.toISOString().split('T')[0]
+    const resDateStr = formData.reservationDate.toISOString().split('T')[0]
+    if (resDateStr < todayStr) {
+      newErrors.reservationDate = 'La fecha de reserva no puede ser en el pasado'
+    }
+
+    if (!formData.startTime) {
+      newErrors.startTime = 'Hora de inicio es requerida'
+    }
+
+    if (!formData.endTime) {
+      newErrors.endTime = 'Hora de fin es requerida'
+    }
+
+    if (formData.startTime && formData.endTime && formData.startTime >= formData.endTime) {
+      newErrors.endTime = 'La hora de fin debe ser después de la hora de inicio'
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!validate()) return
     await toast.promise(submit(formData), {
       loading: 'Creando reserva...',
       success: () => {
@@ -84,6 +123,7 @@ export default function CreateReservaModal({
                   onChange={handleChange}
                   required
                 />
+                {errors.espacioId && <div className="text-danger">{errors.espacioId}</div>}
               </div>
               <div className="mb-3">
                 <label htmlFor="clientId" className="form-label">
@@ -98,6 +138,7 @@ export default function CreateReservaModal({
                   onChange={handleChange}
                   required
                 />
+                {errors.clientId && <div className="text-danger">{errors.clientId}</div>}
               </div>
               <div className="mb-3">
                 <label htmlFor="reservationDate" className="form-label">
@@ -112,6 +153,7 @@ export default function CreateReservaModal({
                   onChange={handleChange}
                   required
                 />
+                {errors.reservationDate && <div className="text-danger">{errors.reservationDate}</div>}
               </div>
               <div className="mb-3">
                 <label htmlFor="startTime" className="form-label">
@@ -126,6 +168,7 @@ export default function CreateReservaModal({
                   onChange={handleChange}
                   required
                 />
+                {errors.startTime && <div className="text-danger">{errors.startTime}</div>}
               </div>
               <div className="mb-3">
                 <label htmlFor="endTime" className="form-label">
@@ -140,6 +183,7 @@ export default function CreateReservaModal({
                   onChange={handleChange}
                   required
                 />
+                {errors.endTime && <div className="text-danger">{errors.endTime}</div>}
               </div>
               <div className="mb-3">
                 <label htmlFor="status" className="form-label">

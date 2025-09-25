@@ -1,3 +1,4 @@
 export const CACHE_KEYS = {
-  RESERVATIONS: 'reservaciones'
+  RESERVATIONS: 'reservaciones',
+  ESPACIOS: 'espacios'
 }
