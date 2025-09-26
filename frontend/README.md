@@ -15,14 +15,14 @@ Interfaz de usuario moderna para el sistema de gestión de reservas de espacios,
 
 ## 📋 Requisitos Previos
 
-- Node.js 18+ y npm
+- Node.js 18+ y yarn
 - Backend corriendo en http://localhost:3000 (ver README del servidor)
 
 ## 🛠️ Instalación y Configuración
 
 ### 1. Instalar dependencias
 ```bash
-npm install
+yarn install
 ```
 
 ### 2. Configurar variables de entorno
@@ -38,7 +38,7 @@ VITE_API_KEY=your-api-key-here
 
 ### 3. Ejecutar en modo desarrollo
 ```bash
-npm run dev
+yarn dev
 ```
 
 La aplicación estará disponible en `http://localhost:5173`
@@ -47,16 +47,13 @@ La aplicación estará disponible en `http://localhost:5173`
 
 ```bash
 # Desarrollo con hot reload
-npm run dev
+yarn dev
 
 # Construir para producción
-npm run build
+yarn build
 
 # Vista previa de la build de producción
-npm run preview
-
-# Ejecutar linter
-npm run lint
+yarn preview
 ```
 
 ## 🔧 Configuración 
@@ -67,5 +64,5 @@ npm run lint
 
 ### Build de Producción
 ```bash
-npm run build
+yarn build
 ```

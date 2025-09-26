@@ -29,13 +29,13 @@ Todos los endpoints deben ser enviados `x-api-key` en el header con el valor esp
 
 ```bash
 # development
-$ yarn run start
+$ yarn start
 
 # watch mode
-$ yarn run start:dev
+$ yarn start:dev
 
 # production mode
-$ yarn run start:prod
+$ yarn start:prod
 ```
 
 ## Correr tests
