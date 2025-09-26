@@ -1,5 +1,5 @@
 # Step 1: Use a Node.js image to build the app
-FROM node:20 as builder
+FROM node:20
 
 # Set working directory inside the container
 WORKDIR /app
@@ -20,15 +20,8 @@ ENV VITE_API_URL=$VITE_API_URL
 # Build the app
 RUN yarn run build
 
-
-# Step 2: Use an Nginx image to serve the static files
-FROM nginx:alpine
-
-# Copy the build files from the builder stage to the Nginx web directory
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
+# Expose port 
+EXPOSE 8085
 
 # Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["yarn", "run", "preview", "--port", "8085", "--host", "0.0.0.0"]
