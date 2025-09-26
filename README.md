@@ -41,7 +41,7 @@ Desarrollé una arquitectura modular con separación clara de responsabilidades:
 
 - Docker y Docker Compose
 - Node.js 18+ (opcional, para desarrollo local)
-- npm o yarn
+- yarn
 
 ## 🚀 Instalación y Ejecución
 
@@ -83,7 +83,7 @@ npx prisma migrate dev --name init
 
 cp .env.example .env
 # Configurar DATABASE_URL en .env si es necesario
-npm yarn start:dev
+yarn start:dev
 ```
 
 #### Frontend
